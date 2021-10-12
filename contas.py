@@ -1,5 +1,6 @@
 class ContaCorrente:
     total_contas_criadas = 0
+    taxa_operacao = None
 
     def __init__(self, cliente, agencia, numero) -> None:
         self.saldo = 100
@@ -7,6 +8,7 @@ class ContaCorrente:
         self.agencia = agencia
         self.numero = numero
 
+        ContaCorrente.taxa_operacao = (30 / ContaCorrente.total_contas_criadas)
         ContaCorrente.total_contas_criadas += 1
         
 
