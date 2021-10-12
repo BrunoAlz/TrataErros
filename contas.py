@@ -1,4 +1,4 @@
-from exceptions import SaldoInsuficienteError
+from exceptions import SaldoInsuficienteError, OperacaoFinanceiraError
 
 
 class Cliente:
@@ -16,7 +16,8 @@ class ContaCorrente:
         self.__saldo = 100
         self.__agencia = 0
         self.__numero = 0
-
+        self.saques_nao_permitidos = 0
+        self.transferencias_nao_permitidas = 0
         self.cliente = cliente
         self.__set_agencia(agencia)
         self.__set_numero(numero)
@@ -54,18 +55,28 @@ class ContaCorrente:
     def saldo(self, value):
         if not isinstance(value, int):
             raise ValueError("O atributo saldo deve ser um inteiro")
+
         self.__saldo = value
 
-
-
     def transferir(self, valor, favorecido):
+        if valor < 0:
+            raise ValueError(
+                "O valor a ser depositado não pode ser menor que zero")
+        try:
+            self.sacar(valor)
+        except SaldoInsuficienteError as E:
+            self.transferencias_nao_permitidas += 1
+            E.args = ()
+            raise OperacaoFinanceiraError("Operação não finalizada") from E
         favorecido.depositar(valor)
 
     def sacar(self, valor):
         if valor < 0:
-            raise ValueError('O valor a ser sacado não pode ser menor que zero')
-        if self.saldo < valor:
-            raise SaldoInsuficienteError('', self.saldo, valor)
+            raise ValueError(
+                "O valor a ser sacado não pode ser menor que zero")
+        if(self.saldo < valor):
+            self.saques_nao_permitidos += 1
+            raise SaldoInsuficienteError("", saldo=self.saldo, valor=valor)
         self.saldo -= valor
 
     def depositar(self, valor):
@@ -91,11 +102,15 @@ def main():
             sys.exit()
 
 # if __name__ == "__main__":
-#     main()
+#    main()
 
 
-conta_corrente = ContaCorrente(None, 400, 125478)
-conta_corrente.depositar(50)
-conta_corrente.sacar(-44)
-
-print(f'Saldo: {conta_corrente.saldo}')
+conta_corrente1 = ContaCorrente(None, 400, 1234567)
+conta_corrente2 = ContaCorrente(None, 401, 1234568)
+try:
+    conta_corrente1.sacar(1000)
+    print("Conta Corrente1 Saldo: ", conta_corrente1.saldo)
+    print("Conta Corrente2 Saldo: ", conta_corrente2 .saldo)
+except OperacaoFinanceiraError as E:
+    breakpoint()
+    pass
