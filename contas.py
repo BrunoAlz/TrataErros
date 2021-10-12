@@ -22,3 +22,6 @@ class ContaCorrente:
 
     def depositar(self, valor):
         self.saldo += valor
+
+
+conta_corrente = ContaCorrente(None, '00', '101')
