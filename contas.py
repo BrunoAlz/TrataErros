@@ -20,10 +20,10 @@ class ContaCorrente:
 
     def __set_agencia(self, valor):
         if not isinstance(valor, int):
-            return
-
+            raise ValueError('O atributo agencia deve ser um número inteiro')
+            
         if valor <= 0:
-            return
+            raise ValueError('O atributo agencia deve ser maior que 0')
         self.__agencia = valor
 
 
@@ -33,10 +33,10 @@ class ContaCorrente:
 
     def __set_numero(self, valor):
         if not isinstance(valor, int):
-            return
+            raise ValueError('O atributo número deve ser um número inteiro')
 
         if valor <= 0:
-            return
+            raise ValueError('O atributo número deve ser um número inteiro')
         self.__numero = valor
 
 
@@ -46,10 +46,10 @@ class ContaCorrente:
 
     def __set_saldo(self, valor):
         if not isinstance(valor, int):
-            return
+            raise ValueError('O atributo saldo deve ser um número inteiro')
 
         if valor <= 0:
-            return
+            raise ValueError('O atributo saldo deve ser um número inteiro')
         self.__saldo = valor
 
 
