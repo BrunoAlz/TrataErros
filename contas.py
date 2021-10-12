@@ -1,5 +1,8 @@
+from pprint import pprint
+
+
 class Cliente:
-    def __init__(self, nome, cpf, profissao) -> None:
+    def __init__(self, nome, cpf, profissao):
         self.nome = nome
         self.cpf = cpf
         self.profissao = profissao
@@ -9,54 +12,51 @@ class ContaCorrente:
     total_contas_criadas = 0
     taxa_operacao = None
 
-    def __init__(self, cliente, agencia, numero) -> None:
+    def __init__(self, cliente, agencia, numero):
         self.__saldo = 100
         self.__agencia = 0
         self.__numero = 0
 
         self.cliente = cliente
-        self.__set_agencia = agencia
-        self.__set_numero = numero
-
+        self.__set_agencia(agencia)
+        self.__set_numero(numero)
         ContaCorrente.total_contas_criadas += 1
-        ContaCorrente.taxa_operacao = (30 / ContaCorrente.total_contas_criadas)
+        ContaCorrente.taxa_operacao = 30/ContaCorrente.total_contas_criadas
 
     @property
     def agencia(self):
         return self.__agencia
 
-    def __set_agencia(self, valor):
-        if not isinstance(valor, int):
-            raise ValueError(
-                'O atributo agencia deve ser um número inteiro', valor)
+    def __set_agencia(self, value):
+        if not isinstance(value, int):
+            raise ValueError("O atributo agencia deve ser um inteiro", value)
+        if value <= 0:
+            raise ValueError("O atributo agencia deve ser maior que zero")
 
-        if valor <= 0:
-            raise ValueError('O atributo agencia deve ser maior que 0')
-        self.__agencia = valor
+        self.__agencia = value
 
     @property
     def numero(self):
         return self.__numero
 
-    def __set_numero(self, valor):
-        if not isinstance(valor, int):
-            raise ValueError('O atributo número deve ser um número inteiro')
-
-        if valor <= 0:
-            raise ValueError('O atributo número deve ser um número inteiro')
-        self.__numero = valor
+    def __set_numero(self, value):
+        if not isinstance(value, int):
+            raise ValueError("O atributo número deve ser um inteiro")
+        if value <= 0:
+            raise ValueError("O atributo número  deve ser maior que zero")
+        self.__numero = value
 
     @property
     def saldo(self):
         return self.__saldo
 
-    def __set_saldo(self, valor):
-        if not isinstance(valor, int):
-            raise ValueError('O atributo saldo deve ser um número inteiro')
-
-        if valor <= 0:
-            raise ValueError('O atributo saldo deve ser um número inteiro')
-        self.__saldo = valor
+    @saldo.setter
+    def saldo(self, value):
+        if not isinstance(value, int):
+            raise ValueError("O atributo saldo deve ser um inteiro")
+        if value <= 0:
+            raise ValueError("O atributo saldo deve ser maior que zero")
+        self.__saldo = value
 
     def transferir(self, valor, favorecido):
         favorecido.depositar(valor)
@@ -66,9 +66,6 @@ class ContaCorrente:
 
     def depositar(self, valor):
         self.saldo += valor
-
-
-conta_corrente = ContaCorrente(None, '00', '101')
 
 
 def main():
@@ -91,3 +88,10 @@ def main():
 
 # if __name__ == "__main__":
 #     main()
+
+
+conta_corrente = ContaCorrente(None, 400, 125478)
+conta_corrente.depositar(50)
+conta_corrente.sacar(50)
+
+print(f'Saldo: {conta_corrente.saldo}')
