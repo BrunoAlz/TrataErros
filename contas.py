@@ -55,21 +55,20 @@ class ContaCorrente:
         if not isinstance(value, int):
             raise ValueError("O atributo saldo deve ser um inteiro")
         self.__saldo = value
-        
-        
+
+
+
     def transferir(self, valor, favorecido):
         favorecido.depositar(valor)
 
     def sacar(self, valor):
         if self.saldo < valor:
-            raise SaldoInsuficienteError
+            raise SaldoInsuficienteError('Saldo Insuficiente')
         self.saldo -= valor
 
     def depositar(self, valor):
         self.saldo += valor
-        
-        
-        
+
 
 def main():
     import sys
