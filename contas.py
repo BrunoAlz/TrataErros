@@ -8,13 +8,14 @@ class ContaCorrente:
         self.agencia = agencia
         self.numero = numero
 
-        ContaCorrente.taxa_operacao = (30 / ContaCorrente.total_contas_criadas)
         ContaCorrente.total_contas_criadas += 1
-        
+        ContaCorrente.taxa_operacao = (30 / ContaCorrente.total_contas_criadas)
+
+
 
     def transferir(self, valor, favorecido):
         favorecido.depositar(valor)
-        
+
 
     def secar(self, valor):
         self.saldo -= valor
